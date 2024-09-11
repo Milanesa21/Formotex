@@ -1,25 +1,39 @@
 import { Request, Response } from "express";
-import EquipoInformatico from "../models/EquipoInformatico";
+import EquipoService from "../services/EquipoService";
 
-// Obtiene todos los equipos informáticos
-export const getEquipos = async (req: Request, res: Response) => {
-    try {
-        const equipos = await EquipoInformatico.findAll();
-        return res.status(200).json(equipos);
-    } catch (error) {
-        return res.status(500).json(error);
+class EquipoController {
+    public async crearEquipo(req: Request, res: Response) {
+        try {
+            const { nombre, descripcion, idGrupo } = req.body;
+            const equipo = await EquipoService.crearEquipo({ nombre, descripcion, idGrupo });
+            res.json(equipo);
+        } catch (error) {
+            res.status(400).json(error);
+        }
     }
-};
-
-
-// Crear un equipo nuevo (solo admins)
-export const createEquipo = async (req: Request, res: Response) => {
-    const {nombre, estado, ubicacion, fechaAdquisicion, grupoId} = req.body;
-
-    try {
-        const nuevoEquipo = await EquipoInformatico.create({nombre, estado, ubicacion, fechaAdquisicion, grupoId});
-        return res.status(201).json(nuevoEquipo);
-    } catch (error) {
-        return res.status(500).json(error);
+    public async obtenerEquipos(req: Request, res: Response) {
+        const equipos = await EquipoService.obtenerEquipos();
+        res.json(equipos);
+      }
+    
+      public async obtenerEquipoPorId(req: Request, res: Response) {
+        const { id } = req.params;
+        const equipo = await EquipoService.obtenerEquipo(Number(id));
+        res.json(equipo);
+      }
+    
+      public async actualizarEquipo(req: Request, res: Response) {
+        const { id } = req.params;
+        await EquipoService.actualizarEquipo(Number(id), req.body);
+        res.json({ message: "Equipo actualizado" });
+      }
+    
+      public async eliminarEquipo(req: Request, res: Response) {
+        const { id } = req.params;
+        await EquipoService.eliminarEquipo(Number(id));
+        res.json({ message: "Equipo eliminado" });
+      }
     }
-};
+    
+    export default new EquipoController();
+    

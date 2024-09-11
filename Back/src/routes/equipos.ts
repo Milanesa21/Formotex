@@ -1,23 +1,12 @@
 import { Router } from "express";
-import { body } from "express-validator";
-import { getEquipos, createEquipo } from "../controllers/equipoController";
-import { verifyToken } from "../middlewares/authMiddleware";
-import { isAdmin, isEmpleadoOrAdmin } from "../middlewares/roleMiddleware";
+import equipoController from "../controllers/equipoController";
 
-const routers = Router();
+const router = Router();
 
-// Obtener todos los equipos (acceso para empleados y administradores)
-routers.get('/', verifyToken, isEmpleadoOrAdmin, getEquipos);
+router.post("/", equipoController.crearEquipo);
+router.get("/", equipoController.obtenerEquipos);
+router.get("/:id", equipoController.obtenerEquipoPorId);
+router.put("/:id", equipoController.actualizarEquipo);
+router.delete("/:id", equipoController.eliminarEquipo);
 
-// Crear un nuevo equipo (solo acceso para administradores)
-routers.post('/', [
-    verifyToken,
-    isAdmin, // Middleware para verificar si es administrador
-    body('nombre').isString(),
-    body('estado').isString(),
-    body('ubicacion').isString(),
-    body('fechaAdquisicion').isDate(),
-    body('grupoId').isInt()
-], createEquipo);
-
-export default routers;
+export default router;
