@@ -3,10 +3,10 @@ import morgan from "morgan";
 import cors from "cors";
 import path from "path";
 import sequelize from "./database/databse";
-/*import authRoutes from "./routes/auth";
-import equipoRoutes from "./routes/equipos";
+import { authRoutes } from "./routes/UsuarioRoutes";
+import { equipoRoutes } from "./routes/equipos";
 import { organizacionRoutes } from "./routes/organizationsRoutes";
-import { grupoRoutes } from "./routes/grupos";*/
+import { grupoRoutes } from "./routes/grupos";
 
 interface Server {
   start(): void;
@@ -18,7 +18,7 @@ class App implements Server {
   constructor() {
     this.app = express();
     this.middlewares();
-    //this.routes();
+    this.routes();
   }
 
   // Configurar middlewares
@@ -28,13 +28,13 @@ class App implements Server {
     this.app.use(express.json());
   }
 
-  // Configurar rutas
-  /*private routes(): void {
+
+  private routes(): void {
     this.app.use("/api/auth", authRoutes);
     this.app.use("/api/equipos", equipoRoutes);
     this.app.use("/api/", organizacionRoutes)
     this.app.use("/api/", grupoRoutes)
-  }*/
+  }
 
   
   public async start(): Promise<void> {

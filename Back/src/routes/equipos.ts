@@ -1,12 +1,12 @@
 import { Router } from "express";
 import equipoController from "../controllers/equipoController";
 
-const router = Router();
+export const equipoRoutes = Router();
 
-router.post("/", equipoController.crearEquipo);
-router.get("/", equipoController.obtenerEquipos);
-router.get("/:id", equipoController.obtenerEquipoPorId);
-router.put("/:id", equipoController.actualizarEquipo);
-router.delete("/:id", equipoController.eliminarEquipo);
+equipoRoutes.post("/", equipoController.crearEquipo);
+equipoRoutes.get("/", equipoController.obtenerEquipos);
+equipoRoutes.get("/:id", equipoController.obtenerEquipoPorId);
+equipoRoutes.put("/:id", equipoController.actualizarEquipo);
+equipoRoutes.delete("/:id", equipoController.eliminarEquipo);
 
-export default router;
+
