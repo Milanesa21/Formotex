@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState<string>('');
@@ -28,7 +29,6 @@ const Login: React.FC = () => {
       } else {
         const data = await response.json();
         console.log('Inicio de sesión exitoso', data);
-        // Manejar la respuesta, redirigir o almacenar el token si es necesario
       }
     } catch (error) {
       setError('Hubo un error en la conexión');
@@ -36,31 +36,33 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="container mt-5">
       <h2>Iniciar Sesión</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username:</label>
+        <div className="mb-3">
+          <label htmlFor="username" className="form-label">Username:</label>
           <input
             type="text"
+            className="form-control"
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">Password:</label>
           <input
             type="password"
+            className="form-control"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Iniciar Sesión</button>
+        {error && <p className="text-danger">{error}</p>}
+        <button type="submit" className="btn btn-primary">Iniciar Sesión</button>
       </form>
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState<string>('');
@@ -32,46 +33,49 @@ const Register: React.FC = () => {
         console.log('Registro exitoso', data);
       }
     } catch (error) {
-      console.log('Error al registrar', error);
+      setError('Hubo un error en la conexión');
     }
   };
 
   return (
-    <div>
+    <div className="container mt-5">
       <h2>Registro</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username:</label>
+        <div className="mb-3">
+          <label htmlFor="username" className="form-label">Username:</label>
           <input
             type="text"
+            className="form-control"
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">Password:</label>
           <input
             type="password"
+            className="form-control"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
-        <div>
-          <label htmlFor="role">Role:</label>
+        <div className="mb-3">
+          <label htmlFor="role" className="form-label">Role:</label>
           <input
             type="text"
+            className="form-control"
             id="role"
             value={role}
             onChange={(e) => setRole(e.target.value)}
             required
           />
         </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Registrar</button>
+        {error && <p className="text-danger">{error}</p>}
+        <button type="submit" className="btn btn-primary">Registrar</button>
       </form>
     </div>
   );
