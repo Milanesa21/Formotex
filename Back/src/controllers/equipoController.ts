@@ -4,8 +4,15 @@ import EquipoService from "../services/EquipoService";
 class EquipoController {
     public async crearEquipo(req: Request, res: Response) {
         try {
-            const { nombre, descripcion, idGrupo } = req.body;
-            const equipo = await EquipoService.crearEquipo({ nombre, descripcion, idGrupo });
+            const { nombre, estado, ubicacion, fechaAdquisicion, grupoId } =
+              req.body;
+            const equipo = await EquipoService.crearEquipo({
+              nombre,
+              estado,
+              ubicacion,
+              fechaAdquisicion,
+              grupoId,
+            });
             res.json(equipo);
         } catch (error) {
             res.status(400).json(error);

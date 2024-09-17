@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import Organizacion from "../models/Organizacion";
 import Usuario from "../models/Usuario";
-import { json, or } from "sequelize";
+import { json } from "sequelize";
+import { CustomRequest } from "../types/express/customRequest";
 
-export const CreateOrganizacion = async ( req: Request, res: Response) => {
+export const CreateOrganizacion = async ( req: CustomRequest, res: Response) => {
     try {
         const {nombre } = req.body;
         const user = req.user as Usuario

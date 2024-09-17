@@ -8,6 +8,8 @@ import { equipoRoutes } from "./routes/equipos";
 import { organizacionRoutes } from "./routes/organizationsRoutes";
 import { grupoRoutes } from "./routes/grupos";
 
+
+// Interfaz para definir un servidor
 interface Server {
   start(): void;
 }
@@ -15,6 +17,8 @@ interface Server {
 class App implements Server {
   private app: Application;
 
+
+  // Inicializar express
   constructor() {
     this.app = express();
     this.middlewares();
@@ -28,7 +32,7 @@ class App implements Server {
     this.app.use(express.json());
   }
 
-
+  // Configurar rutas
   private routes(): void {
     this.app.use("/api/auth", authRoutes);
     this.app.use("/api/equipos", equipoRoutes);
@@ -36,7 +40,7 @@ class App implements Server {
     this.app.use("/api/", grupoRoutes)
   }
 
-  
+  // Iniciar el servidor
   public async start(): Promise<void> {
     try {
       await sequelize.sync({ force: false });
@@ -50,5 +54,6 @@ class App implements Server {
   }
 }
 
+// Iniciar la aplicación
 const app = new App();
 app.start();

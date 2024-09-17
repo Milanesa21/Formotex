@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import Grupo from "../models/Grupo";
 import Organizacion from "../models/Organizacion";
 import Usuario from "../models/Usuario";
+import { CustomRequest } from "../types/express/customRequest";
 
-
-export const createGrupo = async (req: Request, res: Response) => {
+export const createGrupo = async (req: CustomRequest, res: Response) => {
     try {
         const { nombre, organizacionId } = req.body;
         const user = req.user as Usuario;
