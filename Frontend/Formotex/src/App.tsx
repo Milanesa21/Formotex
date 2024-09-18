@@ -1,35 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// App.tsx
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes as RouterRoutes, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Organizaciones from './pages/Organizaciones';
+import Grupos from './pages/Grupos';
+import Equipos from './pages/Equipos';
+import Usuarios from './pages/Usuarios';
+import { AuthProvider, useAuth } from './Context/AuthContext';
+import Navbar from './Components/NavBar'; 
 
-function App() {
-  const [count, setCount] = useState(0)
+const AppRoutes: React.FC = () => {
+  const { isAuthenticated, user } = useAuth();
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Router>
+      <Navbar /> 
+      <RouterRoutes>
+        <Route
+          path="/login"
+          element={isAuthenticated ? <Navigate to="/" replace /> : <Login />}
+        />
+        <Route
+          path="/register"
+          element={<Register />}
+        />
+        <Route
+          path="/organizaciones"
+          element={isAuthenticated ? <Organizaciones /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/organizaciones/:organizacionId/grupos"
+          element={isAuthenticated ? <Grupos /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/equipos"
+          element={isAuthenticated ? <Equipos /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/usuarios"
+          element={isAuthenticated && user?.role === 'admin' ? <Usuarios /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/"
+          element={isAuthenticated ? <h1>Bienvenido {user?.username}</h1> : <Navigate to="/login" />}
+        />
+        <Route path="*" element={<Navigate to="/" />} />
+      </RouterRoutes>
+    </Router>
+  );
+};
 
-export default App
+const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <AppRoutes />
+    </AuthProvider>
+  );
+};
+
+export default App;

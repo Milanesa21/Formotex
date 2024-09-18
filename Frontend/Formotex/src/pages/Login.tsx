@@ -1,69 +1,60 @@
 import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Context/AuthContext';
 
 const Login: React.FC = () => {
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    const loginData = {
-      username,
-      password,
-    };
-
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(loginData),
+      const response = await axios.post('http://localhost:3000/api/auth/login', {
+        username,
+        password,
       });
+      const { token, role } = response.data; // Asume que `token` y `role` están en la respuesta
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        setError(errorData.message || 'Error al iniciar sesión');
-      } else {
-        const data = await response.json();
-        console.log('Inicio de sesión exitoso', data);
-      }
+      // Guardar el token y el rol en localStorage
+      login(token, role);
+
+      alert('Inicio de sesión exitoso');
+
+      // Redirigir a EquipmentList después de 1 segundo
+      setTimeout(() => {
+        navigate('/EquipmentList');
+      }, 1000);
     } catch (error) {
-      setError('Hubo un error en la conexión');
+      console.error('Error de inicio de sesión:', error);
+      setError('Error al iniciar sesión');
     }
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Iniciar Sesión</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="username" className="form-label">Username:</label>
-          <input
-            type="text"
-            className="form-control"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">Password:</label>
-          <input
-            type="password"
-            className="form-control"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p className="text-danger">{error}</p>}
-        <button type="submit" className="btn btn-primary">Iniciar Sesión</button>
+    <div>
+      <form onSubmit={handleLogin}>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Usuario"
+          required
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Contraseña"
+          required
+        />
+        <button type="submit">Iniciar sesión</button>
       </form>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <p>¿No tienes una cuenta? <a href="/register">Regístrate aquí</a></p>
     </div>
   );
 };
