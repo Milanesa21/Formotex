@@ -1,19 +1,36 @@
 /* Equipos.css */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
 .create-form {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
-    max-width: 500px;
-    width: 100vw;
+    max-width: 600px; /* Ampliar el ancho máximo del formulario */
+    width: 100%;
 }
 
 .create-form .form-control {
-    margin-bottom: 10px;
+    margin-bottom: 15px; /* Aumentar el espaciado entre campos */
 }
 
 .create-form .btn-success {
-    align-self: flex-start;
+    align-self: center; /* Centrar el botón de crear equipo */
 }
+
+.table {
+    width: 100%;
+    max-width: 900px; /* Ampliar el ancho máximo de la tabla */
+}
+
+.table td, .table th {
+    text-align: center;
+}
+
 .modal {
     position: fixed;
     top: 0;
@@ -24,13 +41,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  .modal-content {
+}
+
+.modal-content {
     background: #fff;
-    padding: 20px;
+    padding: 30px; /* Ampliar el relleno del modal */
     border-radius: 8px;
-    width: 400px;
+    width: 500px; /* Ampliar el ancho del modal */
     max-width: 100%;
-  }
-  
+}

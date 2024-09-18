@@ -1,15 +1,17 @@
 /* Organizaciones.css */
 .create-form {
     margin-top: 20px;
-    width: 100vb;
+    width: 100%; /* Corregido el error tipográfico de '100vb' a '100%' */
     display: flex;
     flex-direction: column;
+    align-items: center; /* Centra los elementos dentro del formulario */
+    max-width: 600px; /* Ampliar el ancho máximo del formulario */
 }
 
 .create-form .form-control {
-    margin-bottom: 10px;
+    margin-bottom: 15px; /* Aumentar el espaciado entre campos */
 }
 
 .create-form .btn-success {
-    align-self: flex-start;
+    align-self: center; /* Centrar el botón de creación */
 }

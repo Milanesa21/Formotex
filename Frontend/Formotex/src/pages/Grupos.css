@@ -4,14 +4,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100vw;
-    max-width: 400px;
+    width: 100%;
+    max-width: 500px; /* Ampliar el ancho máximo del formulario */
 }
 
 .create-form .form-control {
-    margin-bottom: 10px;
+    margin-bottom: 15px; /* Aumentar el espaciado entre campos */
 }
 
 .create-form .btn-success {
-    align-self: center;
+    align-self: center; /* Centrar el botón de creación */
 }
