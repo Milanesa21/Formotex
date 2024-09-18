@@ -68,29 +68,31 @@ class UsuarioController {
     }
   }
   
-  public async obtenerUsuarioPorToken(req: CustomRequest, res: Response) {
-    try {
-      const token = req.header("Authorization")?.split(" ")[1];
-      if (!token)
-        return res
-          .status(401)
-          .json({ message: "No hay token, autorización denegada." });
+public async obtenerUsuarioPorToken(req: CustomRequest, res: Response) {
+  try {
+    const token = req.header("Authorization")?.split(" ")[1];
+    if (!token)
+      return res
+        .status(401)
+        .json({ message: "No hay token, autorización denegada." });
 
-      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
-        id: number;
-      };
-      const usuario = await Usuario.findByPk(decoded.id);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+      id: number;
+    };
+    const usuario = await Usuario.findByPk(decoded.id);
+    
+    if (!usuario)
+      return res.status(404).json({ message: "Usuario no encontrado." });
 
-      if (!usuario)
-        return res.status(404).json({ message: "Usuario no encontrado." });
+    // Enviar directamente username y role
+    res.json({ username: usuario.username, role: usuario.role });
 
-      res.json({ username: usuario.username, role: usuario.role });
-    } catch (error) {
-      res
-        .status(500)
-        .json({ message: "Error al obtener datos del usuario.", error });
-    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error al obtener datos del usuario.", error });
   }
+}
 }
 
 export default new UsuarioController();

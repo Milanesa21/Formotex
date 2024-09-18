@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
-import './Equipos.css'; // Asegúrate de importar el CSS para estilos adicionales
+import './Equipos.css';
 
 const Equipos: React.FC = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const grupoId = queryParams.get('grupoId') || ''; // Cambiado a grupoId
+
   interface Equipo {
     id: number;
     nombre: string;
@@ -14,19 +19,20 @@ const Equipos: React.FC = () => {
   const [equipos, setEquipos] = useState<Equipo[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [newEquipo, setNewEquipo] = useState({ nombre: '', estado: '', ubicacion: '' });
+  const [editEquipo, setEditEquipo] = useState<Equipo | null>(null);
   const { user } = useAuth();
 
   useEffect(() => {
     const fetchEquipos = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/equipos');
+        const response = await axios.get(`http://localhost:4000/api/equipos?grupoId=${grupoId}`);
         setEquipos(response.data);
       } catch (error) {
         console.error('Error al obtener los equipos', error);
       }
     };
     fetchEquipos();
-  }, []);
+  }, [grupoId]);
 
   const handleDelete = async (id: number) => {
     try {
@@ -39,14 +45,26 @@ const Equipos: React.FC = () => {
 
   const handleCreate = async () => {
     try {
-      await axios.post('http://localhost:4000/api/equipos', newEquipo);
+      await axios.post('http://localhost:4000/api/equipos/', { ...newEquipo, grupoId });
       setNewEquipo({ nombre: '', estado: '', ubicacion: '' });
       setIsCreating(false);
-      // Refrescar la lista de equipos
-      const response = await axios.get('http://localhost:4000/api/equipos');
+      const response = await axios.get(`http://localhost:4000/api/equipos?grupoId=${grupoId}`);
       setEquipos(response.data);
     } catch (error) {
       console.error('Error al crear el equipo', error);
+    }
+  };
+
+  const handleEdit = async () => {
+    if (editEquipo) {
+      try {
+        await axios.put(`http://localhost:4000/api/equipos/${editEquipo.id}`, editEquipo);
+        setEditEquipo(null);
+        const response = await axios.get(`http://localhost:4000/api/equipos?grupoId=${grupoId}`);
+        setEquipos(response.data);
+      } catch (error) {
+        console.error('Error al editar el equipo', error);
+      }
     }
   };
 
@@ -104,7 +122,9 @@ const Equipos: React.FC = () => {
               <td>{equipo.estado}</td>
               <td>{equipo.ubicacion}</td>
               <td>
-                <button className="btn btn-info">Detalles</button>
+                <button className="btn btn-warning" onClick={() => setEditEquipo(equipo)}>
+                  Editar
+                </button>
                 {user?.role === 'admin' && (
                   <button className="btn btn-danger" onClick={() => handleDelete(equipo.id)}>
                     Eliminar
@@ -115,6 +135,41 @@ const Equipos: React.FC = () => {
           ))}
         </tbody>
       </table>
+
+      {editEquipo && (
+        <div className="modal" onClick={() => setEditEquipo(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Editar Equipo</h3>
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Nombre del equipo"
+              value={editEquipo.nombre}
+              onChange={(e) => setEditEquipo({ ...editEquipo, nombre: e.target.value })}
+            />
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Estado"
+              value={editEquipo.estado}
+              onChange={(e) => setEditEquipo({ ...editEquipo, estado: e.target.value })}
+            />
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Ubicación"
+              value={editEquipo.ubicacion}
+              onChange={(e) => setEditEquipo({ ...editEquipo, ubicacion: e.target.value })}
+            />
+            <button className="btn btn-success" onClick={handleEdit}>
+              Guardar Cambios
+            </button>
+            <button className="btn btn-secondary" onClick={() => setEditEquipo(null)}>
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

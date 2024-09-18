@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../Context/AuthContext';
-import './Organizaciones.css'; // Asegúrate de importar el CSS para estilos adicionales
+import { Link } from 'react-router-dom'; // Importa Link
+import './Organizaciones.css';
 
 const Organizaciones: React.FC = () => {
   interface Organizacion {
@@ -12,23 +13,27 @@ const Organizaciones: React.FC = () => {
   const [organizaciones, setOrganizaciones] = useState<Organizacion[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [newNombre, setNewNombre] = useState('');
-  const { user } = useAuth();
+  const { user, token } = useAuth();
 
   useEffect(() => {
     const fetchOrganizaciones = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/organizaciones');
+        const response = await axios.get('http://localhost:4000/api/organizaciones', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
         setOrganizaciones(response.data);
       } catch (error) {
         console.error('Error al obtener organizaciones', error);
       }
     };
     fetchOrganizaciones();
-  }, []);
+  }, [token]);
 
   const handleDelete = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:4000/api/organizaciones/${id}`);
+      await axios.delete(`http://localhost:4000/api/organizaciones/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setOrganizaciones(organizaciones.filter(org => org.id !== id));
     } catch (error) {
       console.error('Error al eliminar la organización', error);
@@ -37,11 +42,14 @@ const Organizaciones: React.FC = () => {
 
   const handleCreate = async () => {
     try {
-      await axios.post('http://localhost:4000/api/organizaciones', { nombre: newNombre });
+      await axios.post('http://localhost:4000/api/organizaciones', { nombre: newNombre }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setNewNombre('');
       setIsCreating(false);
-      // Refrescar la lista de organizaciones
-      const response = await axios.get('http://localhost:4000/api/organizaciones');
+      const response = await axios.get('http://localhost:4000/api/organizaciones', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setOrganizaciones(response.data);
     } catch (error) {
       console.error('Error al crear la organización', error);
@@ -86,11 +94,12 @@ const Organizaciones: React.FC = () => {
               <td>
                 {user?.role === 'admin' && (
                   <>
-                    <button className="btn btn-warning mr-2">Editar</button>
                     <button className="btn btn-danger" onClick={() => handleDelete(org.id)}>Eliminar</button>
                   </>
                 )}
-                <button className="btn btn-info">Ver Grupos</button>
+                <Link to={`/organizaciones/${org.id}/grupos`} className="btn btn-info">
+                  Ver Grupos
+                </Link>
               </td>
             </tr>
           ))}

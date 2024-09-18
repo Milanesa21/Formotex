@@ -1,11 +1,14 @@
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 import axios from 'axios';
 
-interface AuthContextProps {
+export interface AuthContextType {
   isAuthenticated: boolean;
   user: { username: string; role: string } | null;
+}
+
+interface AuthContextProps extends AuthContextType {
   token: string | null;
-  login: (token: string, role: string) => void;
+  login: (token: string) => void;
   logout: () => void;
 }
 
@@ -24,35 +27,35 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
-    const savedRole = localStorage.getItem('role');
-    if (savedToken && savedRole) {
+    if (savedToken) {
       setToken(savedToken);
-      fetchUserData(savedToken, savedRole);
+      fetchUserData(savedToken);
     }
   }, []);
 
-  const fetchUserData = async (token: string, role: string) => {
+  const fetchUserData = async (token: string) => {
     try {
-      const response = await axios.get('http://localhost:3000/api/auth/me', {
+      const response = await axios.get('http://localhost:4000/api/auth/me', {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setUser({ username: response.data.username, role });
-      setIsAuthenticated(true);
+      if (response.status === 200) {
+        setUser({ username: response.data.username, role: response.data.role });
+        setIsAuthenticated(true);
+      } else {
+        throw new Error('Failed to fetch user data');
+      }
     } catch (error) {
       console.error('Failed to fetch user data', error);
       setIsAuthenticated(false);
+      setToken(null);
+      localStorage.removeItem('token');
     }
-    console.log('fetchUserData');
   };
 
-  const login = (token: string, role: string) => {
+  const login = (token: string) => {
     setToken(token);
     localStorage.setItem('token', token);
-    fetchUserData(token, role);
-    console.log('login');
-    console.log(token);
-    console.log(role);
-    console.log(user);
+    fetchUserData(token);
   };
 
   const logout = () => {

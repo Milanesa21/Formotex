@@ -1,11 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Asegúrate de importar Bootstrap en tu proyecto
 
-
 const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login'); // Redirige al login después de cerrar sesión
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -19,14 +24,11 @@ const Navbar: React.FC = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/organizaciones">Organizaciones</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/equipos">Equipos</Link>
-            </li>
           </ul>
           <ul className="navbar-nav ml-auto">
             {user ? (
               <li className="nav-item">
-                <button className="btn btn-outline-danger" onClick={logout}>Cerrar sesión</button>
+                <button className="btn btn-outline-danger" onClick={handleLogout}>Cerrar sesión</button>
               </li>
             ) : (
               <>

@@ -30,10 +30,6 @@ EquipoInformatico.init({
         type: DataTypes.STRING,
         allowNull: false
     },
-    fechaAdquisicion: {
-        type: DataTypes.DATE,
-        allowNull: false
-    },
     grupoId: {
         type: DataTypes.INTEGER,
         allowNull: false,

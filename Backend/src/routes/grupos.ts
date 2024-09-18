@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { createGrupo, getGrupos, getGupoById, deleteGrupos } from "../controllers/grupoController";
-import { authMiddleware } from "../middlewares/authMiddleware";
+import { createGrupo, getGrupos, getGrupoById, deleteGrupos } from "../controllers/grupoController";
 
 export const grupoRoutes = Router();
 
-grupoRoutes.post('/grupos', authMiddleware, createGrupo);
-grupoRoutes.get('/grupos', authMiddleware, getGrupos);
-grupoRoutes.get('/grupos/:id', authMiddleware, getGupoById);
-grupoRoutes.delete('/grupos/:id', authMiddleware, deleteGrupos);
+// Elimina el authMiddleware de las rutas
+grupoRoutes.post('/', createGrupo);
+grupoRoutes.get('/:organizacionId', getGrupos); // Actualiza la ruta para obtener grupos por organizacionId
+grupoRoutes.get('/grupo/:id', getGrupoById); // Obtén un grupo por su ID
+grupoRoutes.delete('/:id', deleteGrupos);

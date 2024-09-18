@@ -37,7 +37,8 @@ class App implements Server {
     this.app.use("/api/auth", authRoutes);
     this.app.use("/api/equipos", equipoRoutes);
     this.app.use("/api/", organizacionRoutes)
-    this.app.use("/api/", grupoRoutes)
+    this.app.use("/api/grupos", grupoRoutes);
+
   }
 
   // Iniciar el servidor

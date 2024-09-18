@@ -5,6 +5,7 @@ import { useAuth } from '../Context/AuthContext';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Asegúrate de importar Bootstrap en tu proyecto
 import './Login.css'; // Asegúrate de importar tu archivo CSS
 
+
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -19,10 +20,10 @@ const Login: React.FC = () => {
         username,
         password,
       });
-      const { token, role } = response.data; // Asume que `token` y `role` están en la respuesta
+      const { token } = response.data; // Asume que `token` y `role` están en la respuesta
 
       // Guardar el token y el rol en localStorage
-      login(token, role);
+      login(token);
 
       alert('Inicio de sesión exitoso');
 

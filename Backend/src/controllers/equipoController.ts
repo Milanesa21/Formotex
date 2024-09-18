@@ -2,22 +2,17 @@ import { Request, Response } from "express";
 import EquipoService from "../services/EquipoService";
 
 class EquipoController {
-    public async crearEquipo(req: Request, res: Response) {
-        try {
-            const { nombre, estado, ubicacion, fechaAdquisicion, grupoId } =
-              req.body;
-            const equipo = await EquipoService.crearEquipo({
-              nombre,
-              estado,
-              ubicacion,
-              fechaAdquisicion,
-              grupoId,
-            });
-            res.json(equipo);
-        } catch (error) {
-            res.status(400).json(error);
-        }
+  public async crearEquipo(req: Request, res: Response) {
+    try {
+      const { nombre, estado, ubicacion, grupoId } = req.body;
+      const equipo = await EquipoService.crearEquipo({ nombre, estado, ubicacion, grupoId });
+      res.json(equipo);
+    } catch (error) {
+      console.error('Error al crear el equipo:', error);
+      res.status(400).json({ message: 'Error al crear el equipo', error });
     }
+  }
+  
     public async obtenerEquipos(req: Request, res: Response) {
         const equipos = await EquipoService.obtenerEquipos();
         res.json(equipos);

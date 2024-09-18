@@ -2,7 +2,8 @@ import EquipoInformatico from "../models/EquipoInformatico";
 
 class EquipoService {
     public async crearEquipo(data: any) {
-        const nuevoEquipo = await EquipoInformatico.create(data);
+        const { nombre, estado, ubicacion, grupoId } = data; // Cambia organizacionId por grupoId
+        const nuevoEquipo = await EquipoInformatico.create({ nombre, estado, ubicacion, grupoId });
         return nuevoEquipo;
     }
 

@@ -7,26 +7,35 @@ import { CustomRequest } from "../types/express/customRequest";
 export const CreateOrganizacion = async ( req: CustomRequest, res: Response) => {
     try {
         const {nombre } = req.body;
+        console.log(req.user)
         const user = req.user as Usuario
+        console.log(user)
 
         if (user.role != 'admin') {
             return res.status(400).json({msg: 'No tienes permisos para crear organizaciones'})
         }
 
         const nuevaOrganizacion = await Organizacion.create({ nombre});
-        return res.status(201),json(nuevaOrganizacion);
+        return res.status(201).json(nuevaOrganizacion);
     } catch(error) {
         return res.status(500).json({msg: 'Error al crear la organizacion'})
     }
 };
 
-export const getOrganizaciones = async ( req: Request, res: Response) => {
+
+
+export const getOrganizaciones = async (req: Request, res: Response) => {
     try {
-        const organizaciones = await Organizacion.findAll();
+      console.log('Recibiendo solicitud para obtener organizaciones');
+      const organizaciones = await Organizacion.findAll();
+      console.log('Organizaciones obtenidas:', organizaciones);
+      return res.status(200).json(organizaciones);
     } catch (error) {
-        return res.status(500). json({msg: 'Error al obtener las organizaciones'})
+      console.error('Error al obtener las organizaciones:', error);
+      return res.status(500).json({ msg: 'Error al obtener las organizaciones' });
     }
-};
+  };
+  
 
 export const getOganizacionById = async(req: Request, res:Response ) => {
     try {
