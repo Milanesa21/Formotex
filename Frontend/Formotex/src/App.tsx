@@ -1,4 +1,3 @@
-// App.tsx
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes as RouterRoutes, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
@@ -8,14 +7,15 @@ import Grupos from './pages/Grupos';
 import Equipos from './pages/Equipos';
 import Usuarios from './pages/Usuarios';
 import { AuthProvider, useAuth } from './Context/AuthContext';
-import Navbar from './Components/NavBar'; 
+import Navbar from './Components/NavBar';
+import './App.css'; // Importa el archivo CSS
 
 const AppRoutes: React.FC = () => {
   const { isAuthenticated, user } = useAuth();
 
   return (
     <Router>
-      <Navbar /> 
+      <Navbar />
       <RouterRoutes>
         <Route
           path="/login"
@@ -43,7 +43,20 @@ const AppRoutes: React.FC = () => {
         />
         <Route
           path="/"
-          element={isAuthenticated ? <h1>Bienvenido {user?.username}</h1> : <Navigate to="/login" />}
+          element={isAuthenticated ? (
+            <div className="app-container">
+              <h1 className="greeting">Bienvenido {user?.username}</h1>
+              <div className="button-group">
+                <a href="/organizaciones" className="button">Organizaciones</a>
+                <a href="/equipos" className="button">Equipos</a>
+                {user?.role === 'admin' && (
+                  <a href="/usuarios" className="button">Usuarios</a>
+                )}
+              </div>
+            </div>
+          ) : (
+            <Navigate to="/login" />
+          )}
         />
         <Route path="*" element={<Navigate to="/" />} />
       </RouterRoutes>

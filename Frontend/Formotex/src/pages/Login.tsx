@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Asegúrate de importar Bootstrap en tu proyecto
+import './Login.css'; // Asegúrate de importar tu archivo CSS
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -13,7 +15,7 @@ const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/login', {
+      const response = await axios.post('http://localhost:4000/api/auth/login', {
         username,
         password,
       });
@@ -35,26 +37,39 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Usuario"
-          required
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Contraseña"
-          required
-        />
-        <button type="submit">Iniciar sesión</button>
-      </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <p>¿No tienes una cuenta? <a href="/register">Regístrate aquí</a></p>
+    <div className="login-wrapper">
+      <div className="login-container">
+        <h2 className="login-title">Iniciar sesión</h2>
+        <form className="login-form" onSubmit={handleLogin}>
+          <div className="form-group mb-3">
+            <label htmlFor="username">Usuario</label>
+            <input
+              id="username"
+              type="text"
+              className="form-control"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Usuario"
+              required
+            />
+          </div>
+          <div className="form-group mb-3">
+            <label htmlFor="password">Contraseña</label>
+            <input
+              id="password"
+              type="password"
+              className="form-control"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Contraseña"
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-primary w-100">Iniciar sesión</button>
+        </form>
+        {error && <p className="login-error">{error}</p>}
+        <p className="login-register-link">¿No tienes una cuenta? <a href="/register">Regístrate aquí</a></p>
+      </div>
     </div>
   );
 };

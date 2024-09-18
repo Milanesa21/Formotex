@@ -42,12 +42,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       console.error('Failed to fetch user data', error);
       setIsAuthenticated(false);
     }
+    console.log('fetchUserData');
   };
 
   const login = (token: string, role: string) => {
     setToken(token);
     localStorage.setItem('token', token);
     fetchUserData(token, role);
+    console.log('login');
+    console.log(token);
+    console.log(role);
+    console.log(user);
   };
 
   const logout = () => {

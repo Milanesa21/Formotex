@@ -1,0 +1,47 @@
+/* Register.css */
+.register-wrapper {
+    height: 100vh;
+    /* Asegura que el wrapper ocupe toda la altura de la ventana */
+    display: flex;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+    /* Color de fondo opcional */
+    margin: 0;
+    padding: 0;
+}
+
+.register-container {
+    max-width: 400px;
+    width: 100%;
+    /* Asegúrate de que el contenedor tenga un ancho máximo y se ajuste al ancho disponible */
+    padding: 20px;
+    background-color: #fff;
+    /* Color de fondo del contenedor */
+    border-radius: 8px;
+    /* Opcional: esquinas redondeadas */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Opcional: sombra para el contenedor */
+}
+
+.register-title {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.register-error {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.register-link {
+    margin-top: 20px;
+    text-align: center;
+}

@@ -1,0 +1,15 @@
+/* Organizaciones.css */
+.create-form {
+    margin-top: 20px;
+    width: 100vb;
+    display: flex;
+    flex-direction: column;
+}
+
+.create-form .form-control {
+    margin-bottom: 10px;
+}
+
+.create-form .btn-success {
+    align-self: flex-start;
+}

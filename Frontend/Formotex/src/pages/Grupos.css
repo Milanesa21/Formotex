@@ -1,0 +1,16 @@
+/* Grupos.css */
+.create-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    max-width: 400px;
+}
+
+.create-form .form-control {
+    margin-bottom: 10px;
+}
+
+.create-form .btn-success {
+    align-self: flex-start;
+}

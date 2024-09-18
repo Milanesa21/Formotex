@@ -1,0 +1,48 @@
+/* Login.css */
+.login-wrapper {
+    height: 100vh;
+    /* Asegura que el wrapper ocupe toda la altura de la ventana */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    background-color: #f8f9fa;
+    /* Color de fondo opcional */
+    margin: 0;
+    padding: 0;
+}
+
+.login-container {
+    max-width: 400px;
+    width: 100%;
+    
+    /* Asegúrate de que el contenedor tenga un ancho máximo y se ajuste al ancho disponible */
+    padding: 20px;
+    background-color: #fff;
+    /* Color de fondo del contenedor */
+    border-radius: 8px;
+    /* Opcional: esquinas redondeadas */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Opcional: sombra para el contenedor */
+}
+
+.login-title {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-error {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.login-register-link {
+    margin-top: 20px;
+    text-align: center;
+}

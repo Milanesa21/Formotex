@@ -1,0 +1,14 @@
+/* Usuarios.css */
+.table {
+    margin-top: 20px;
+}
+
+.table .btn {
+    margin-right: 5px;
+}
+
+.table .form-control {
+    width: auto;
+    display: inline-block;
+    margin-bottom: 0;
+}
